@@ -55,6 +55,7 @@ app.post('/addExpense', async (req, res) => {
     const dataToAdd = req.body;
     const data = new AppData(dataToAdd);
     const x = await data.save();
+    res.send({});
 });
 
 app.post('/getBarChartData', async (req, res) => {

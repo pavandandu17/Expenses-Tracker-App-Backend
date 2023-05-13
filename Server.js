@@ -3,7 +3,9 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://127.0.0.1:5500'
+}));
 const AppData = require("./models/AppData");
 
 //Connecting DB

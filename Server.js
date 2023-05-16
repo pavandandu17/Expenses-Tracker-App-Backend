@@ -41,7 +41,7 @@ app.get("/deleteAll", async (req, res) => {
 app.post("/getExpenses", async (req, res) => {
     // console.log(req.ye/);
     const datatoFilter = req.body;
-    const filteredData = await AppData.find(datatoFilter);
+    const filteredData = await AppData.find(datatoFilter).sort({year:1, month:1, date:1});
     res.send(filteredData);
     //    console.log(filteredData);
 

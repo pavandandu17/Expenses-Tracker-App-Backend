@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 app.use(cors({
-    origin: ['https://etrackerapp.netlify.app', 'http://127.0.0.1:5500'];
+    origin: ['https://etrackerapp.netlify.app', 'http://127.0.0.1:5500']
 }));
 const AppData = require("./models/AppData");
 

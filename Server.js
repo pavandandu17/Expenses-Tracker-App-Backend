@@ -1,12 +1,14 @@
 const express = require("express");
 const app = express();
+const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 app.use(cors({
-    origin: ['https://etrackerapp.netlify.app', 'http://127.0.0.1:5500']
+    origin: ['https://etrackerapp.netlify.app', 'http://127.0.0.1:5500', 'http://localhost:3000']
 }));
 const AppData = require("./models/AppData");
+const User = require("./models/user");
 
 //Connecting DB
 const DBLink = 'mongodb+srv://pavandandu17:trhtvgsdp@cluster0.xjicp93.mongodb.net/expensestrackerapp?retryWrites=true&w=majority';
@@ -28,10 +30,49 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//To serve static files from public directory
+app.use(express.static('public'));
+
 //Routes
 app.get('/', (req, res) => {
-    res.send("Hello");
-})
+    res.sendFile('login/login.html', { root: __dirname + '/public' });
+});
+
+app.post('/login', (req, res) => {
+
+});
+
+app.post('/register',(req, res) => {
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const password = req.body.password;
+
+    User.findOne({ email })
+        .then(async (existingUser) => {
+            if(existingUser) {
+                res.send("USER ALREADY EXISTS");
+            }
+
+            const newUser = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+            };
+
+            await newUser.save();
+            res.redirect('/');
+        })
+        .catch((error) => {
+            console.log(error);
+            // res.status(500).json({message: 'Internal Server Error'});
+        });
+});
+
+app.get('/home', (req, res) => {
+    res.sendFile('home/index.html', { root: __dirname + '/public' });
+});
 
 app.get("/deleteAll", async (req, res) => {
     await AppData.deleteMany();
@@ -109,6 +150,11 @@ app.post('/getPieChartData', async (req, res) => {
         })
 });
 
+app.delete('/delete', (req, res) => {
+    const expenseID = req.body.expenseID;
+    console.log(expenseID);
+    res.sendStatus(200);
+})
 
 function calculate(Array) {
     let amount = 0;

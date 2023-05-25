@@ -1,0 +1,36 @@
+header {
+    background-color: rgb(209, 233, 253);
+    box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.2), 0 0px 10px 0 rgba(0, 0, 0, 0.19);
+
+    display: flex;
+    justify-content: space-between;
+    overflow: auto;
+}
+
+h1 {
+    margin: 0 0 0 50px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-transform: uppercase;
+}
+
+nav {
+    margin: 0 20px 0 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+nav > button {
+    height: 100%;
+    font-size: larger;
+    border: none;
+    background-color: inherit;
+    padding: 0 20px;
+    transition: background-color 0.3s ease;
+}
+
+nav > button:hover {
+    cursor: pointer;
+    background-color: rgb(67, 170, 255);
+}

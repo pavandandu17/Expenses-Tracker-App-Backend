@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS Files Begin-->
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/header.css">
+    <link rel="stylesheet" href="CSS/report.css">
+    <!-- CSS Files End-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <title>Expenses Tracker</title>
+</head>
+
+<body>
+    <header>
+        <h1>Expenses Tracker</h1>
+        <nav>
+            <button onclick="displayAddExpense()">Add Expense</button>
+            <button onclick="displayReport()">Report</button>
+            <button onclick="displayAnalyze()">Analyze</button>
+        </nav>
+    </header>
+    <main>
+        <div id="initialDisplayContainer">
+            <h3>Today's expense:
+                <span id="todaysExpense"></span>
+                <span id="datePercentChange"></span>
+            </h3>
+            <h3>This month's expense:
+                <span id="thisMonthsExpense"></span>
+                <span id="monthPercentChange"></span>
+            </h3>
+        </div>
+        <div id="formContainer">
+            <form onsubmit="addExpense()" id="inputForm1">
+                <label for="expenseType">Expense Type</label>
+                <select name="expenseType" id="expenseType">
+                    <option value="" selected disabled>Select</option>
+                    <option value="0">Food</option>
+                    <option value="1">Petrol/Gas</option>
+                    <option value="2">Entertainment</option>
+                    <option value="3">Fitness/Gym</option>
+                    <option value="4">Transport</option>
+                    <option value="5">Taxes</option>
+                    <option value="6">Investment</option>
+                    <option value="7">Shopping</option>
+                    <option value="8">Groceries</option>
+                    <option value="9">Bills</option>
+                    <option value="10">Books</option>
+                    <option value="11">Rent</option>
+                    <option value="12">EMI</option>
+                    <option value="13">Others</option>
+                </select>
+
+                <label for="expenseDescription">Expense Description</label>
+                <textarea style="resize:none" name="expenseDescription" id="expenseDescription" cols="30"
+                    rows="3"></textarea>
+
+                <label for="expenseAmount">Expense Amount</label>
+                <input type="number" name="expenseAmount" id="expenseAmount">
+
+                <label for="expenseDate">Date</label>
+                <input type="date" name="expenseDate" id="expenseDate">
+
+                <button type="submit" id="submitButton">ADD Expense</button>
+            </form>
+
+        </div>
+
+        <div id="reportContainer" style="display: none">
+            <button id="deleteButton" onclick="clearData()">Delete Data</button>
+            <form onsubmit="submitForm2()" id="inputForm2">
+                <label for="year">Year</label>
+                <input type="number" name="year" id="year" min="1900" max="2023" oninput="enableMonthDateInputs()"
+                    required>
+
+                <label for="month">Month(optional)</label>
+                <select name="month" id="month" oninput="updateDateInput()" disabled>
+                    <option value="" selected disabled>Select an option</option>
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+
+                <label for="date">Date(optional)</label>
+                <input type="number" name="date" id="date" min="0" max="31" disabled>
+
+                <button type="submit" id="form2SubmitButton" disabled>List Expenses</button>
+            </form>
+            <table id="displayTable">
+                <thead>
+                    <th>S.No.</th>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div id="analyzeContainer" style="display:none">
+            <div class="chartFormContainer">
+                <form id="chartForm">
+
+                    <label for="chartYear">Year:</label>
+                    <input type="number" name="chartYear" id="chartYear" min="1900" max="2023"
+                        oninput="enableChartMonthInput()" required>
+                    <label for="chartMonth">Select Month:</label>
+                    <select name="chartMonth" id="chartMonth" oninput="enableChartTypeInput()" disabled>
+                        <option value="" selected disabled>Select an option</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </select>
+
+                    <label for="chartType">Select Chart:</label>
+                    <select name="chartType" id="chartType" disabled>
+                        <option value="" selected disabled>Select</option>
+                        <option value="bar">Bar</option>
+                        <option value="pie">Pie</option>
+                    </select>
+
+                    <button type="submit" onclick="displayChart()">Display</button>
+                </form>
+            </div>
+            <div id="barChartContainer">
+                <canvas id="barChart" style="display: none"></canvas>
+            </div>
+
+            <div id="pieChartContainer">
+                <canvas id="pieChart" style="display: none"></canvas>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JavaScript Scripts Begin-->
+    <script src="Scripts/script.js"></script>
+    <script src="Scripts/spa.js"></script>
+    <!-- JavaScript Scripts End -->
+</body>
+
+</html>

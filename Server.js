@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
+const encrypt = require('mongoose-encryption');
 const cors = require('cors');
 
 app.use(cors({
@@ -34,12 +35,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 //Routes
-app.get('/', (req, res) => {
-    res.sendFile('login/login.html', { root: __dirname + '/public' });
+app.get('/', async(req, res) => {
+    const records = await AppData.find({year:2023, month:4});
+    const Amount = calculate(records);
+    res.json({ data: Amount });
 });
 
 app.post('/login', (req, res) => {
-
+    
 });
 
 app.post('/register',(req, res) => {
